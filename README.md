@@ -1,9 +1,9 @@
 # Room of Secrets
 
 ## Table of Contents
-1. ![Project Description](#project-description)
-2. ![Game Design](#game-design)
-3. ![Assets](#assets)
+1. [Project Description](#project-description)
+2. [Game Design](#game-design)
+3. [Assets](#assets)
 
 ## Project Description
 - **Version**: 1.0.0, November, 2023
