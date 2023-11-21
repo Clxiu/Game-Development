@@ -196,7 +196,7 @@ public class PlayerController : MonoBehaviour
                 }
                 else if (clueGained[i].gameObject.name == "Dairy")
                 {
-                    clueText.text += "- Sir Alexandria's Dairy, Wardrobe Password 3527;\n";
+                    clueText.text += "- Sir Alexandria's Diary, Wardrobe Password 3527;\n";
                 }
                 else if (clueGained[i].gameObject.name == "Mirror Commode Panel")
                 {
