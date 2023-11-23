@@ -28,6 +28,7 @@ public class PlayerController : MonoBehaviour
     private Vector3 lastMousePosition;
     private float totalMouseMovement = 0;
     private TextMeshProUGUI glassPanelText;
+    private bool buttonCooldown = false;
 
     public MeshRenderer glassRenderer;
     public Material dirtyMaterial;
@@ -89,6 +90,7 @@ public class PlayerController : MonoBehaviour
     public Button helpCloseButton;
     public Button bagCloseButton;
     public Button helpButton;
+    public Button hintButton;
     public Button mirrorComodeCloseButton;
     public Button smallClosetCloseButton;
     public Button testamentCloseButton;
@@ -148,6 +150,8 @@ public class PlayerController : MonoBehaviour
         playerRigidBody.MovePosition(playerRigidBody.position + move);
 
         helpButton.onClick.AddListener(HelpButton);
+
+        hintButton.onClick.AddListener(HintButton);
 
         if (Input.GetKeyDown(KeyCode.F) && currentInteractableObject != null)
         {
@@ -420,6 +424,20 @@ public class PlayerController : MonoBehaviour
     {
         helpPanel.SetActive(true);
         helpCloseButton.onClick.AddListener(() => HidePanel(helpPanel));
+    }
+    private IEnumerator ButtonCooldownRoutine()
+    {
+        buttonCooldown = true;
+        yield return new WaitForSeconds(10.0f);
+        buttonCooldown = false;
+    }
+    public void HintButton()
+    {
+        if (!buttonCooldown)
+        {
+            StartCoroutine(ButtonCooldownRoutine());
+            gameManager.UpdateHintNumber();
+        }
     }
 
     private IEnumerator CheckForCircularMouseMovement()

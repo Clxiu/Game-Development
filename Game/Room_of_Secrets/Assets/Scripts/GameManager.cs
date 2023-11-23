@@ -17,11 +17,13 @@ public class GameManager : MonoBehaviour
 
     public int keyNumber;
     public int clueNumber;
+    public int hintNumber = 3;
     private float timeRemaining = 900;
     public bool timerIsRunning = false;
 
     public TextMeshProUGUI clueText;
     public TextMeshProUGUI keyText;
+    public TextMeshProUGUI hintText;
     public TextMeshProUGUI countdownText;
     public Dictionary<string, string> cluePanelMapper; 
     // Start is called before the first frame update
@@ -65,7 +67,15 @@ public class GameManager : MonoBehaviour
     public void UpdateClueNumber()
     {
         clueNumber ++;
-        clueText.text = "Clues: 11 / " + clueNumber;
+        clueText.text = "Clues: " + clueNumber + " / 11 ";
+    }
+    public void UpdateHintNumber()
+    {
+        if (hintNumber > 0)
+        {
+            hintNumber -= 1;
+            hintText.text = "Hints: " + hintNumber;
+        }
     }
     public void StartGame()
     {
