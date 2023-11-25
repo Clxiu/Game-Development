@@ -12,6 +12,7 @@ public class InteractableObject : MonoBehaviour
     // Start is called before the first frame update
 
     public GameObject interactable;
+    public GameObject objectPanel;
 
     //private string interactionMessage = "You have interacted with the ";
 

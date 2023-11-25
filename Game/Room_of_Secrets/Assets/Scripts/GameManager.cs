@@ -17,7 +17,7 @@ public class GameManager : MonoBehaviour
 
     public int keyNumber;
     public int clueNumber;
-    public int hintNumber = 3;
+    private int hintNumber = 3;
     private float timeRemaining = 900;
     public bool timerIsRunning = false;
 
@@ -71,11 +71,10 @@ public class GameManager : MonoBehaviour
     }
     public void UpdateHintNumber()
     {
-        if (hintNumber > 0)
-        {
+        
             hintNumber -= 1;
             hintText.text = "Hints: " + hintNumber;
-        }
+        
     }
     public void StartGame()
     {
@@ -83,6 +82,7 @@ public class GameManager : MonoBehaviour
         timerIsRunning = true;
         keyNumber = 0;
         clueNumber = 0;
+        hintNumber = 3;
         titleScreen.gameObject.SetActive(false);
         gameInterface.gameObject.SetActive(true);
     }

@@ -10,8 +10,9 @@ public class LockerManager : MonoBehaviour
     private string correctWardrobe = "3527";
     public InteractableObject bigCloset;
     public GameObject wardrobePasswordInput;
-    public GameObject wardrobeLock;
-    public GameObject wardrobe;
+    public GameObject submitButton;
+    public GameObject openDiary;
+    public GameObject diary;
     public TextMeshProUGUI feedback;
     public bool opened;
     public PlayerController playerController;
@@ -43,9 +44,9 @@ public class LockerManager : MonoBehaviour
     {
         feedback.text = "Locker unlocked!";
         Debug.Log("Locker unlocked!");
-        wardrobeLock.SetActive(false);
-        wardrobe.SetActive(true);
-        gameManager.UpdateClueNumber();
-        playerController.clueGained.Add(bigCloset);
+        wardrobePasswordInput.SetActive(false);
+        submitButton.SetActive(false);
+        diary.SetActive(true); 
+        openDiary.SetActive(true);
     }
 }

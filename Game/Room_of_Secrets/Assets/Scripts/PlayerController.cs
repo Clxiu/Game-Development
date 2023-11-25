@@ -59,7 +59,6 @@ public class PlayerController : MonoBehaviour
     public GameObject windowClueGained;
     public GameObject glassPanel;
     public GameObject closetPanel;
-    public GameObject closetPuzzlePanel;
     public GameObject helpPanel;
     public GameObject clueBagPanel;
     public GameObject mirrorComodePanel;
@@ -86,7 +85,6 @@ public class PlayerController : MonoBehaviour
     public Button windowCloseButton;
     public Button glassCloseButton;
     public Button closetCloseButton;
-    public Button closetPuzzleCloseButton;
     public Button helpCloseButton;
     public Button bagCloseButton;
     public Button helpButton;
@@ -124,7 +122,6 @@ public class PlayerController : MonoBehaviour
         dairyOpened = false;
         bedOpened = false;
         windowOpened = false;
-        closetOpened = false;
         glassOpened = false;
         mirrorComodeOpened = false;
         smallClosetOpened = false;
@@ -135,83 +132,85 @@ public class PlayerController : MonoBehaviour
         glassPanelText = glassPanel.transform.Find("ClueText").GetComponent<TextMeshProUGUI>();
         fingerprintImage.gameObject.SetActive(false);
         eraser.gameObject.SetActive(false);
+
+        helpButton.onClick.AddListener(HelpButton);
+        hintButton.onClick.AddListener(HintButton);
     }
 
     // Update is called once per frame
     void Update()
     {
-        horizontalInput = Input.GetAxis("Horizontal");
-        forwardInput = Input.GetAxis("Vertical");
-
-        transform.Rotate(Vector3.up, horizontalInput * turnSpeed * Time.deltaTime);
-        transform.Translate(Vector3.forward * Time.deltaTime * speed * forwardInput);
-
-        Vector3 move = transform.forward * forwardInput * speed * Time.deltaTime;
-        playerRigidBody.MovePosition(playerRigidBody.position + move);
-
-        helpButton.onClick.AddListener(HelpButton);
-
-        hintButton.onClick.AddListener(HintButton);
-
-        if (Input.GetKeyDown(KeyCode.F) && currentInteractableObject != null)
+        if (gameManager.timerIsRunning)
         {
-            Debug.Log("Player choose to interact with object: " + currentInteractableObject.name);
-            Interact(currentInteractableObject);
-        }
+            horizontalInput = Input.GetAxis("Horizontal");
+            forwardInput = Input.GetAxis("Vertical");
 
-        if (Input.GetKeyDown(KeyCode.G))
-        {
-            Debug.Log("Player open clue bag.");
-            ShowPanel(clueBagPanel);
-            clueText.text = "";
-            for (int i = 0; i < clueGained.Count; i++)
+            transform.Rotate(Vector3.up, horizontalInput * turnSpeed * Time.deltaTime);
+            transform.Translate(Vector3.forward * Time.deltaTime * speed * forwardInput);
+
+            Vector3 move = transform.forward * forwardInput * speed * Time.deltaTime;
+            playerRigidBody.MovePosition(playerRigidBody.position + move);
+
+            if (Input.GetKeyDown(KeyCode.F) && currentInteractableObject != null)
             {
-                if (clueGained[i].gameObject.name == "Fireplace")
-                {
-                    clueText.text += "- Lady Catherine's Letter to Assassin;\n";
-                }
-                else if (clueGained[i].gameObject.name == "Window")
-                {
-                    clueText.text += "- Muddy Footprint Leading to Lady Catherine's Chambers;\n";
-                }
-                else if (clueGained[i].gameObject.name == "Bed")
-                {
-                    clueText.text += "- Lady Catherine's Letter to Assassin;\n";
-                }
-                else if (clueGained[i].gameObject.name == "Axe")
-                {
-                    clueText.text += "- Lady Catherine's fingerprint on axe;\n";
-                }
-                else if (clueGained[i].gameObject.name == "Dead body")
-                {
-                    clueText.text += "- Sir Alexandria's Dead Body, Poisoned, Injured by Axe;\n";
-                }
-                else if (clueGained[i].gameObject.name == "Glass")
-                {
-                    clueText.text += "- Butler's Fingerprints on The Glass of Poison;\n";
-                }
-                else if (clueGained[i].gameObject.name == "BigCloset")
-                {
-                    clueText.text += "- Sir Alexandria's Letter, Clue to Open the Hidden Room;\n";
-                }
-                else if (clueGained[i].gameObject.name == "SmallCloset")
-                {
-                    clueText.text += "- Key to the Main Door;\n";
-                }
-                else if (clueGained[i].gameObject.name == "Dairy")
-                {
-                    clueText.text += "- Sir Alexandria's Diary, Wardrobe Password 3527;\n";
-                }
-                else if (clueGained[i].gameObject.name == "Mirror Commode Panel")
-                {
-                    clueText.text += "- Sir Alexandria's Letter to Friend;\n";
-                }
-                else if (clueGained[i].gameObject.name == "RoundTable_hidden")
-                {
-                    clueText.text += "- Sir Alexandria's Testament;\n";
-                }
+                Debug.Log("Player choose to interact with object: " + currentInteractableObject.name);
+                Interact(currentInteractableObject);
             }
-            bagCloseButton.onClick.AddListener(() => HidePanel(clueBagPanel));
+
+            if (Input.GetKeyDown(KeyCode.G))
+            {
+                Debug.Log("Player open clue bag.");
+                ShowPanel(clueBagPanel);
+                clueText.text = "";
+                for (int i = 0; i < clueGained.Count; i++)
+                {
+                    if (clueGained[i].gameObject.name == "Fireplace")
+                    {
+                        clueText.text += "- Lady Catherine's Letter to Assassin;\n";
+                    }
+                    else if (clueGained[i].gameObject.name == "Window")
+                    {
+                        clueText.text += "- Muddy Footprint Leading to Lady Catherine's Chambers;\n";
+                    }
+                    else if (clueGained[i].gameObject.name == "Bed")
+                    {
+                        clueText.text += "- Lady Catherine's Letter to Assassin;\n";
+                    }
+                    else if (clueGained[i].gameObject.name == "Axe")
+                    {
+                        clueText.text += "- Lady Catherine's fingerprint on axe;\n";
+                    }
+                    else if (clueGained[i].gameObject.name == "Dead body")
+                    {
+                        clueText.text += "- Sir Alexandria's Dead Body, Poisoned, Injured by Axe;\n";
+                    }
+                    else if (clueGained[i].gameObject.name == "Glass")
+                    {
+                        clueText.text += "- Butler's Fingerprints on The Glass of Poison;\n";
+                    }
+                    else if (clueGained[i].gameObject.name == "BigCloset")
+                    {
+                        clueText.text += "- Sir Alexandria's Letter, Clue to Open the Hidden Room;\n";
+                    }
+                    else if (clueGained[i].gameObject.name == "SmallCloset")
+                    {
+                        clueText.text += "- Key to the Main Door;\n";
+                    }
+                    else if (clueGained[i].gameObject.name == "Dairy")
+                    {
+                        clueText.text += "- Sir Alexandria's Diary, Wardrobe Password 3527;\n";
+                    }
+                    else if (clueGained[i].gameObject.name == "Mirror Commode Panel")
+                    {
+                        clueText.text += "- Sir Alexandria's Letter to Friend;\n";
+                    }
+                    else if (clueGained[i].gameObject.name == "RoundTable_hidden")
+                    {
+                        clueText.text += "- Sir Alexandria's Testament;\n";
+                    }
+                }
+                bagCloseButton.onClick.AddListener(() => HidePanel(clueBagPanel));
+            }
         }
     }
     void OnCollisionEnter(Collision collision)
@@ -325,23 +324,15 @@ public class PlayerController : MonoBehaviour
         }
         else if (gameObject.name == "BigCloset")
         {
-            if (!lockerManager.opened)
+            ShowPanel(closetPanel);
+            if (lockerManager.opened && !closetOpened)
             {
-                ShowPanel(closetPuzzlePanel);
-                closetPuzzleCloseButton.onClick.AddListener(() => HidePanel(closetPuzzlePanel));
+                closetOpened = true;
+                gameManager.UpdateClueNumber();
+                clueGained.Add(gameObject);
+            }
+            closetCloseButton.onClick.AddListener(() => HidePanel(closetPanel));
 
-                if (!closetOpened & lockerManager.opened)
-                {
-                    closetOpened = true;
-                    clueGained.Add(gameObject);
-                }
-                closetCloseButton.onClick.AddListener(() => HidePanel(closetPanel));
-            }
-            else
-            {
-                ShowPanel(closetPanel);
-                closetCloseButton.onClick.AddListener(() => HidePanel(closetPanel));
-            }
         }
         else if (gameObject.name == "Fireplace")
         {
@@ -398,6 +389,7 @@ public class PlayerController : MonoBehaviour
         {
             if (gameManager.keyNumber >= 1 && gameManager.clueNumber >= 11)
             {
+                gameManager.timerIsRunning = false;
                 gameManager.GameSuccess();
                 successPanel.gameObject.SetActive(true);
             }
@@ -428,7 +420,7 @@ public class PlayerController : MonoBehaviour
     private IEnumerator ButtonCooldownRoutine()
     {
         buttonCooldown = true;
-        yield return new WaitForSeconds(10.0f);
+        yield return new WaitForSeconds(1.0f);
         buttonCooldown = false;
     }
     public void HintButton()
@@ -662,12 +654,14 @@ public class PlayerController : MonoBehaviour
     }
     public void onSuccessCloseButtonClick()
     {
+        gameManager.timerIsRunning = false;
         canInteract.gameObject.SetActive(false);
         successPanel.gameObject.SetActive(false);
         creditsPanel.gameObject.SetActive(true);
     }
     public void onEndingClick()
     {
+        gameManager.timerIsRunning = false;
         creditsPanel.gameObject.SetActive(false);
         endingPanel.gameObject.SetActive(true);
     }
